@@ -8,106 +8,163 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as HotelsIndexRouteImport } from './routes/hotels.index'
-import { Route as HotelsNewRouteImport } from './routes/hotels.new'
-import { Route as HotelsHotelIdRouteImport } from './routes/hotels.$hotelId'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as LoginRouteImport } from "./routes/login";
+import { Route as HotelsRouteImport } from "./routes/hotels";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as HotelsIndexRouteImport } from "./routes/hotels.index";
+import { Route as HotelsNewRouteImport } from "./routes/hotels.new";
+import { Route as HotelsHotelIdRouteImport } from "./routes/hotels.$hotelId";
 
+const LoginRoute = LoginRouteImport.update({
+	id: "/login",
+	path: "/login",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const HotelsRoute = HotelsRouteImport.update({
+	id: "/hotels",
+	path: "/hotels",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/",
+	path: "/",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const HotelsIndexRoute = HotelsIndexRouteImport.update({
-  id: '/hotels/',
-  path: '/hotels/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/",
+	path: "/",
+	getParentRoute: () => HotelsRoute,
+} as any);
 const HotelsNewRoute = HotelsNewRouteImport.update({
-  id: '/hotels/new',
-  path: '/hotels/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/new",
+	path: "/new",
+	getParentRoute: () => HotelsRoute,
+} as any);
 const HotelsHotelIdRoute = HotelsHotelIdRouteImport.update({
-  id: '/hotels/$hotelId',
-  path: '/hotels/$hotelId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/$hotelId",
+	path: "/$hotelId",
+	getParentRoute: () => HotelsRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/hotels/$hotelId': typeof HotelsHotelIdRoute
-  '/hotels/new': typeof HotelsNewRoute
-  '/hotels': typeof HotelsIndexRoute
+	"/": typeof IndexRoute;
+	"/hotels": typeof HotelsRouteWithChildren;
+	"/login": typeof LoginRoute;
+	"/hotels/$hotelId": typeof HotelsHotelIdRoute;
+	"/hotels/new": typeof HotelsNewRoute;
+	"/hotels/": typeof HotelsIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/hotels/$hotelId': typeof HotelsHotelIdRoute
-  '/hotels/new': typeof HotelsNewRoute
-  '/hotels': typeof HotelsIndexRoute
+	"/": typeof IndexRoute;
+	"/login": typeof LoginRoute;
+	"/hotels/$hotelId": typeof HotelsHotelIdRoute;
+	"/hotels/new": typeof HotelsNewRoute;
+	"/hotels": typeof HotelsIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/hotels/$hotelId': typeof HotelsHotelIdRoute
-  '/hotels/new': typeof HotelsNewRoute
-  '/hotels/': typeof HotelsIndexRoute
+	__root__: typeof rootRouteImport;
+	"/": typeof IndexRoute;
+	"/hotels": typeof HotelsRouteWithChildren;
+	"/login": typeof LoginRoute;
+	"/hotels/$hotelId": typeof HotelsHotelIdRoute;
+	"/hotels/new": typeof HotelsNewRoute;
+	"/hotels/": typeof HotelsIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/hotels/$hotelId' | '/hotels/new' | '/hotels'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/hotels/$hotelId' | '/hotels/new' | '/hotels'
-  id: '__root__' | '/' | '/hotels/$hotelId' | '/hotels/new' | '/hotels/'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths:
+		| "/"
+		| "/hotels"
+		| "/login"
+		| "/hotels/$hotelId"
+		| "/hotels/new"
+		| "/hotels/";
+	fileRoutesByTo: FileRoutesByTo;
+	to: "/" | "/login" | "/hotels/$hotelId" | "/hotels/new" | "/hotels";
+	id:
+		| "__root__"
+		| "/"
+		| "/hotels"
+		| "/login"
+		| "/hotels/$hotelId"
+		| "/hotels/new"
+		| "/hotels/";
+	fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  HotelsHotelIdRoute: typeof HotelsHotelIdRoute
-  HotelsNewRoute: typeof HotelsNewRoute
-  HotelsIndexRoute: typeof HotelsIndexRoute
+	IndexRoute: typeof IndexRoute;
+	HotelsRoute: typeof HotelsRouteWithChildren;
+	LoginRoute: typeof LoginRoute;
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hotels/': {
-      id: '/hotels/'
-      path: '/hotels'
-      fullPath: '/hotels'
-      preLoaderRoute: typeof HotelsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hotels/new': {
-      id: '/hotels/new'
-      path: '/hotels/new'
-      fullPath: '/hotels/new'
-      preLoaderRoute: typeof HotelsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hotels/$hotelId': {
-      id: '/hotels/$hotelId'
-      path: '/hotels/$hotelId'
-      fullPath: '/hotels/$hotelId'
-      preLoaderRoute: typeof HotelsHotelIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
+declare module "@tanstack/react-router" {
+	interface FileRoutesByPath {
+		"/login": {
+			id: "/login";
+			path: "/login";
+			fullPath: "/login";
+			preLoaderRoute: typeof LoginRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/hotels": {
+			id: "/hotels";
+			path: "/hotels";
+			fullPath: "/hotels";
+			preLoaderRoute: typeof HotelsRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/": {
+			id: "/";
+			path: "/";
+			fullPath: "/";
+			preLoaderRoute: typeof IndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/hotels/": {
+			id: "/hotels/";
+			path: "/";
+			fullPath: "/hotels/";
+			preLoaderRoute: typeof HotelsIndexRouteImport;
+			parentRoute: typeof HotelsRoute;
+		};
+		"/hotels/new": {
+			id: "/hotels/new";
+			path: "/new";
+			fullPath: "/hotels/new";
+			preLoaderRoute: typeof HotelsNewRouteImport;
+			parentRoute: typeof HotelsRoute;
+		};
+		"/hotels/$hotelId": {
+			id: "/hotels/$hotelId";
+			path: "/$hotelId";
+			fullPath: "/hotels/$hotelId";
+			preLoaderRoute: typeof HotelsHotelIdRouteImport;
+			parentRoute: typeof HotelsRoute;
+		};
+	}
 }
+
+interface HotelsRouteChildren {
+	HotelsHotelIdRoute: typeof HotelsHotelIdRoute;
+	HotelsNewRoute: typeof HotelsNewRoute;
+	HotelsIndexRoute: typeof HotelsIndexRoute;
+}
+
+const HotelsRouteChildren: HotelsRouteChildren = {
+	HotelsHotelIdRoute: HotelsHotelIdRoute,
+	HotelsNewRoute: HotelsNewRoute,
+	HotelsIndexRoute: HotelsIndexRoute,
+};
+
+const HotelsRouteWithChildren =
+	HotelsRoute._addFileChildren(HotelsRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  HotelsHotelIdRoute: HotelsHotelIdRoute,
-  HotelsNewRoute: HotelsNewRoute,
-  HotelsIndexRoute: HotelsIndexRoute,
-}
+	IndexRoute: IndexRoute,
+	HotelsRoute: HotelsRouteWithChildren,
+	LoginRoute: LoginRoute,
+};
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();
