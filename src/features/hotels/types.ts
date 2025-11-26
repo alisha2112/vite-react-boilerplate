@@ -6,3 +6,9 @@ export interface Hotel {
 	policy: string;
 	stars: number;
 }
+
+export interface ApiResponse<T> {
+	data: T;
+	message?: string;
+	status?: number;
+}
