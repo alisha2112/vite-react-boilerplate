@@ -7,9 +7,9 @@ import {
 } from "@tanstack/react-router";
 import { useAuthStore } from "../store/authStore";
 import { useQueryClient } from "@tanstack/react-query";
-import type { JSX } from "react";
 
 // --- Компонент AccessDenied (Стиль: Reception / Formal) ---
+// Це точна копія того, що ми робили для готелів
 function AccessDenied(): JSX.Element {
 	const logout = useAuthStore((state) => state.logout);
 	const navigate = useNavigate();
@@ -42,8 +42,8 @@ function AccessDenied(): JSX.Element {
 					Restricted Area
 				</h2>
 				<p className="text-gray-500 mb-8 font-light">
-					Вибачте, у вас немає прав доступу до панелі управління готелем. Ця зона
-					лише для адміністраторів.
+					Вибачте, у вас немає прав доступу до бази клієнтів. Ця зона лише для
+					адміністраторів.
 				</p>
 
 				<div className="space-y-4">
@@ -69,14 +69,15 @@ function AccessDenied(): JSX.Element {
 	);
 }
 
-// --- Layout (Стиль: Premium Admin Dashboard) ---
-function HotelsLayout(): JSX.Element {
+// --- Layout ---
+function ClientsLayout(): JSX.Element {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
 	const logout = useAuthStore((state) => state.logout);
 	const role = useAuthStore((state) => state.role);
 
+	// ПЕРЕВІРКА РОЛІ: Якщо не адмін — показуємо AccessDenied
 	if (role !== "ADMINISTRATOR") {
 		return <AccessDenied />;
 	}
@@ -93,21 +94,16 @@ function HotelsLayout(): JSX.Element {
 			<header className="bg-gray-900 shadow-lg sticky top-0 z-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex justify-between items-center h-16">
-
-						{/* ЛІВА ЧАСТИНА: Логотип + Навігація */}
-						<div className="flex items-center gap-8">
-							{/* Логотип */}
-							<div className="flex items-center gap-2">
-								<div className="h-8 w-8 bg-gray-700 flex items-center justify-center rounded-sm">
+						<div className="flex items-center gap-6">
+							{/* Навігація між модулями */}
+							<div className="flex items-center gap-1">
+								<div className="h-8 w-8 bg-gray-700 flex items-center justify-center rounded-sm mr-2">
 									<span className="text-white font-serif font-bold">H</span>
 								</div>
-								<span className="text-gray-100 font-serif font-bold text-lg hidden sm:inline-block">
-                  AdminPanel
-                </span>
+								<span className="text-gray-100 font-serif font-bold text-lg mr-6">AdminPanel</span>
 							</div>
 
-							{/* Навігація (Меню) */}
-							<nav className="hidden md:flex gap-2">
+							<nav className="hidden md:flex gap-4">
 								<Link
 									activeProps={{ className: "text-white bg-gray-800" }}
 									className="text-gray-400 hover:text-white px-3 py-2 rounded-sm text-sm font-medium transition-colors"
@@ -125,7 +121,7 @@ function HotelsLayout(): JSX.Element {
 							</nav>
 						</div>
 
-						{/* ПРАВА ЧАСТИНА: Юзер інфо + Logout */}
+						{/* Права частина */}
 						<div className="flex items-center gap-6">
 							<div className="hidden sm:flex flex-col items-end">
                 <span className="text-sm text-gray-200 font-medium leading-none">
@@ -133,27 +129,12 @@ function HotelsLayout(): JSX.Element {
                 </span>
 								<span className="text-xs text-gray-500 mt-1">Logged in</span>
 							</div>
-
 							<div className="h-8 w-px bg-gray-700 hidden sm:block"></div>
-
 							<button
 								className="text-gray-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2"
 								onClick={handleLogout}
 							>
 								<span>Logout</span>
-								<svg
-									className="w-4 h-4"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth="2"
-									/>
-								</svg>
 							</button>
 						</div>
 					</div>
@@ -169,23 +150,15 @@ function HotelsLayout(): JSX.Element {
 
 			{/* Footer */}
 			<footer className="bg-white border-t border-gray-200 py-6 mt-auto">
-				<div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
-					<div>&copy; {new Date().getFullYear()} Hotel Management System</div>
-					<div className="mt-2 sm:mt-0 flex gap-4">
-            <span className="hover:text-gray-800 cursor-pointer transition-colors">
-              Support
-            </span>
-						<span className="hover:text-gray-800 cursor-pointer transition-colors">
-              Privacy Policy
-            </span>
-					</div>
+				<div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+					&copy; {new Date().getFullYear()} Hotel Management System
 				</div>
 			</footer>
 		</div>
 	);
 }
 
-export const Route = createFileRoute("/hotels")({
+export const Route = createFileRoute("/clients")({
 	beforeLoad: ({ location }) => {
 		const isAuth = useAuthStore.getState().isAuthenticated;
 		if (!isAuth) {
@@ -198,5 +171,5 @@ export const Route = createFileRoute("/hotels")({
 			});
 		}
 	},
-	component: HotelsLayout,
+	component: ClientsLayout,
 });
