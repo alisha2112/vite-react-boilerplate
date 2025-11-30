@@ -18,6 +18,7 @@ import { Route as ClientsIndexRouteImport } from './routes/clients.index'
 import { Route as HotelsNewRouteImport } from './routes/hotels.new'
 import { Route as HotelsHotelIdRouteImport } from './routes/hotels.$hotelId'
 import { Route as ClientsNewRouteImport } from './routes/clients.new'
+import { Route as ClientsClientIdRouteImport } from './routes/clients.$clientId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -64,12 +65,18 @@ const ClientsNewRoute = ClientsNewRouteImport.update({
   path: '/new',
   getParentRoute: () => ClientsRoute,
 } as any)
+const ClientsClientIdRoute = ClientsClientIdRouteImport.update({
+  id: '/$clientId',
+  path: '/$clientId',
+  getParentRoute: () => ClientsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clients': typeof ClientsRouteWithChildren
   '/hotels': typeof HotelsRouteWithChildren
   '/login': typeof LoginRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
   '/clients/new': typeof ClientsNewRoute
   '/hotels/$hotelId': typeof HotelsHotelIdRoute
   '/hotels/new': typeof HotelsNewRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
   '/clients/new': typeof ClientsNewRoute
   '/hotels/$hotelId': typeof HotelsHotelIdRoute
   '/hotels/new': typeof HotelsNewRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/clients': typeof ClientsRouteWithChildren
   '/hotels': typeof HotelsRouteWithChildren
   '/login': typeof LoginRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
   '/clients/new': typeof ClientsNewRoute
   '/hotels/$hotelId': typeof HotelsHotelIdRoute
   '/hotels/new': typeof HotelsNewRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/clients'
     | '/hotels'
     | '/login'
+    | '/clients/$clientId'
     | '/clients/new'
     | '/hotels/$hotelId'
     | '/hotels/new'
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/clients/$clientId'
     | '/clients/new'
     | '/hotels/$hotelId'
     | '/hotels/new'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '/clients'
     | '/hotels'
     | '/login'
+    | '/clients/$clientId'
     | '/clients/new'
     | '/hotels/$hotelId'
     | '/hotels/new'
@@ -203,15 +215,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsNewRouteImport
       parentRoute: typeof ClientsRoute
     }
+    '/clients/$clientId': {
+      id: '/clients/$clientId'
+      path: '/$clientId'
+      fullPath: '/clients/$clientId'
+      preLoaderRoute: typeof ClientsClientIdRouteImport
+      parentRoute: typeof ClientsRoute
+    }
   }
 }
 
 interface ClientsRouteChildren {
+  ClientsClientIdRoute: typeof ClientsClientIdRoute
   ClientsNewRoute: typeof ClientsNewRoute
   ClientsIndexRoute: typeof ClientsIndexRoute
 }
 
 const ClientsRouteChildren: ClientsRouteChildren = {
+  ClientsClientIdRoute: ClientsClientIdRoute,
   ClientsNewRoute: ClientsNewRoute,
   ClientsIndexRoute: ClientsIndexRoute,
 }

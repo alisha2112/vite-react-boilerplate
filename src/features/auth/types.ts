@@ -1,5 +1,5 @@
 export interface LoginRequest {
-	email: string; // Або username, залежно від вашого бекенду
+	email: string;
 	password: string;
 }
 

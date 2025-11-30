@@ -4,7 +4,6 @@ import { z } from "zod";
 import { useLogin } from "../api";
 import { Link } from "@tanstack/react-router";
 
-// Схема валідації
 const loginSchema = z.object({
 	email: z.string().email("Invalid email address"),
 	password: z.string().min(4, "Password must be at least 4 characters"),

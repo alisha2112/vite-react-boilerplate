@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	useQuery,
 	useMutation,
@@ -9,7 +11,16 @@ import { useNavigate } from "@tanstack/react-router";
 import apiClient from "../../lib/axios";
 import type { Client, ApiResponse } from "./types";
 
-// --- API Functions ---
+const mapClientToBackend = (data: Partial<Client>): any => {
+	return {
+		first_name: data.firstName,
+		last_name: data.lastName,
+		middle_name: data.middleName || "",
+		email: data.email,
+		phone: data.phone,
+		is_registered: data.isRegistered ?? true,
+	};
+};
 
 const getClients = async (): Promise<Array<Client>> => {
 	const response = await apiClient.get<ApiResponse<Array<Client>>>("/clients");
@@ -22,7 +33,10 @@ const getClientById = async (id: string | number): Promise<Client> => {
 };
 
 const createClient = async (newClient: Omit<Client, "id">): Promise<Client> => {
-	const response = await apiClient.post<ApiResponse<Client>>("/clients", newClient);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const payload = mapClientToBackend(newClient);
+	 
+	const response = await apiClient.post<ApiResponse<Client>>("/clients", payload);
 	return response.data.data;
 };
 
@@ -33,7 +47,10 @@ const updateClient = async ({
 	id: string | number;
 	data: Partial<Client>;
 }): Promise<Client> => {
-	const response = await apiClient.patch<ApiResponse<Client>>(`/clients/${id}`, data);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const payload = mapClientToBackend(data);
+	 
+	const response = await apiClient.patch<ApiResponse<Client>>(`/clients/${id}`, payload);
 	return response.data.data;
 };
 
@@ -50,7 +67,7 @@ export const useClients = (): UseQueryResult<Array<Client>, Error> =>
 	});
 
 export const useClient = (id: string): UseQueryResult<Client, Error> =>
-	useQuery<Array<Client>, Error>({ // Note: queryKey depends on id
+	useQuery<Client, Error>({
 		queryKey: ["clients", id],
 		queryFn: () => getClientById(id),
 		enabled: !!id,
