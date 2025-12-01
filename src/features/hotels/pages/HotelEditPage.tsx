@@ -81,6 +81,7 @@ export function HotelEditPage(): JSX.Element {
 						className="bg-white shadow-sm border border-gray-200 rounded-sm p-6 space-y-6"
 						onSubmit={handleSubmit(onSubmit)}
 					>
+						{/* Name & Location */}
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<div>
 								<label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
@@ -107,15 +108,50 @@ export function HotelEditPage(): JSX.Element {
 							</div>
 						</div>
 
-						<div>
+						{/* Stars */}
+						<div className="max-w-xs">
 							<label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-								Description
+								Star Rating (1-5)
 							</label>
-							<textarea
-								{...register("description")}
+							<input
+								type="number"
+								//min="1"
+								//max="5"
+								{...register("stars")}
 								className="block w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-1 focus:ring-gray-900 sm:text-sm"
-								rows={3}
 							/>
+							{errors.stars && (
+								<p className="text-red-500 text-xs mt-1">
+									{errors.stars.message}
+								</p>
+							)}
+						</div>
+
+						<div className="border-t border-gray-100 pt-6 space-y-6">
+							{/* Description */}
+							<div>
+								<label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+									Description
+								</label>
+								<textarea
+									{...register("description")}
+									className="block w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-1 focus:ring-gray-900 sm:text-sm"
+									rows={3}
+								/>
+							</div>
+
+							{/* Policy (ДОДАНО) */}
+							<div>
+								<label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+									Hotel Policy
+								</label>
+								<textarea
+									{...register("policy")}
+									className="block w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-1 focus:ring-gray-900 sm:text-sm"
+									placeholder="Check-in/out rules, pets policy..."
+									rows={3}
+								/>
+							</div>
 						</div>
 
 						<div className="flex justify-end pt-4 border-t border-gray-100">
@@ -224,3 +260,4 @@ export function HotelEditPage(): JSX.Element {
 		</div>
 	);
 }
+

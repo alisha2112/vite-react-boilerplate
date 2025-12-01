@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useLogin } from "../api";
 import { Link } from "@tanstack/react-router";
+import type { JSX } from "react";
 
 const loginSchema = z.object({
 	email: z.string().email("Invalid email address"),

@@ -9,7 +9,6 @@ import { useAuthStore } from "../store/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 import type { JSX } from "react";
 
-// --- Компонент AccessDenied (Стиль: Reception / Formal) ---
 function AccessDenied(): JSX.Element {
 	const logout = useAuthStore((state) => state.logout);
 	const navigate = useNavigate();

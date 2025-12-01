@@ -54,23 +54,35 @@ export function HotelsListPage(): JSX.Element {
 					<table className="min-w-full divide-y divide-gray-200">
 						<thead className="bg-gray-50">
 						<tr>
-							<th className="py-4 px-6 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Property</th>
-							<th className="py-4 px-6 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Location</th>
-							<th className="py-4 px-6 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Stats</th>
-							<th className="py-4 px-6 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Rating</th>
-							<th className="py-4 px-6 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+							<th className="py-4 px-6 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+								Property
+							</th>
+							<th className="py-4 px-6 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+								Location
+							</th>
+							<th className="py-4 px-6 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+								Stats
+							</th>
+							<th className="py-4 px-6 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+								Rating
+							</th>
+							<th className="py-4 px-6 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
+								Actions
+							</th>
 						</tr>
 						</thead>
 						<tbody className="bg-white divide-y divide-gray-100">
 						{hotels?.map((hotel) => (
-							<tr key={hotel.id} className="hover:bg-gray-50 transition-colors group">
+							<tr
+								key={hotel.id}
+								className="hover:bg-gray-50 transition-colors group"
+							>
 								<td className="py-4 px-6 whitespace-nowrap font-medium text-gray-900">
 									{hotel.name}
 								</td>
 								<td className="py-4 px-6 whitespace-nowrap text-gray-500 text-sm">
 									{hotel.location}
 								</td>
-								{/* --- НОВА КОЛОНКА STATS --- */}
 								<td className="py-4 px-6 whitespace-nowrap">
 									<div className="flex gap-2">
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
@@ -83,9 +95,17 @@ export function HotelsListPage(): JSX.Element {
 								</td>
 								<td className="py-4 px-6 whitespace-nowrap text-center">
 									<div className="flex items-center justify-center gap-1">
-										{/* Зірочки */}
+										{/* ВИПРАВЛЕНО: додано fill-current та збільшено розмір до w-4 h-4 */}
 										{Array.from({ length: 5 }).map((_, index) => (
-											<svg key={index} className={`w-3 h-3 ${index < hotel.stars ? "text-gray-900 fill-current" : "text-gray-200"}`} viewBox="0 0 24 24">
+											<svg
+												key={index}
+												viewBox="0 0 24 24"
+												className={`w-4 h-4 fill-current ${
+													index < (hotel.stars || 0)
+														? "text-gray-900"
+														: "text-gray-200"
+												}`}
+											>
 												<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
 											</svg>
 										))}
@@ -93,9 +113,22 @@ export function HotelsListPage(): JSX.Element {
 								</td>
 								<td className="py-4 px-6 whitespace-nowrap text-right text-sm font-medium">
 									<div className="flex justify-end gap-3">
-										<Link className="text-gray-500 hover:text-gray-900 text-xs uppercase tracking-wider" params={{ hotelId: String(hotel.id) }} to="/hotels/$hotelId">Edit</Link>
+										<Link
+											className="text-gray-500 hover:text-gray-900 text-xs uppercase tracking-wider"
+											params={{ hotelId: String(hotel.id) }}
+											to="/hotels/$hotelId"
+										>
+											Edit
+										</Link>
 										<span className="text-gray-300">|</span>
-										<button className="text-gray-400 hover:text-red-700 text-xs uppercase tracking-wider" onClick={() => { handleDelete(hotel.id); }}>Delete</button>
+										<button
+											className="text-gray-400 hover:text-red-700 text-xs uppercase tracking-wider"
+											onClick={() => {
+												handleDelete(hotel.id);
+											}}
+										>
+											Delete
+										</button>
 									</div>
 								</td>
 							</tr>
